@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>MDN Games: Three.js demo</title>
+    <style>
+        body { margin: 0; padding: 0; font-size: 0; }
+        canvas { width: 100%; height: 100%; } // Tamaño del canvas
+    </style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> // Librería three.js
+<script>
+
+    var WIDTH = window.innerWidth; 
+    var HEIGHT = window.innerHeight; 
+
+    var renderer = new THREE.WebGLRenderer({antialias:true}); 
+    renderer.setSize(WIDTH, HEIGHT); // tamaño de la ventana 
+    renderer.setClearColor(0xDDDDDD, 1);     // textura de la ventana 
+    document.body.appendChild(renderer.domElement);      // este es el renderizado 
+
+    var scene = new THREE.Scene();   // nueva escena 
+
+    var camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 100);  
+     // coordenadas para la  posicion de la camara 
+    camera.position.z = 10;
+    camera.position.y = 10;
+    camera.position.x = -10;
+    scene.add(camera); 
+   
+ 
+    const ejesXYZ = new THREE.AxesHelper( 100 );
+    scene.add( ejesXYZ );
+    
+
+    // se raliza la funcion para la realizar las transformacion      
+    function cono(transformación){             
+   
+        
+
+
+           //el cono sin transformar
+          var altura
+            if (transformación==false){
+            altura =1;}
+
+
+                else {altura =3;}
+
+
+
+
+         var diametro =2;
+        var lados = 10;
+        var coneGeometry = new THREE.ConeGeometry(diametro,altura,lados);
+        var basicMaterial = new THREE.MeshLambertMaterial({color: 0xEAEFF2}); // agragamos la textura al cono 
+        var cone = new THREE.Mesh(coneGeometry, basicMaterial); 
+        scene.add(cone);
+        cone.rotation.set(Math.PI/2, 0, 0);
+        cone.position.z=altura/2;
+         camera.lookAt(0,0,0);
+
+    
