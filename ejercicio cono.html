@@ -9,7 +9,7 @@
     </style>
 </head>
 <body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> // Librería three.js
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> 
 <script>
 
     var WIDTH = window.innerWidth; 
@@ -22,11 +22,14 @@
 
     var scene = new THREE.Scene();   // nueva escena 
 
+
+
     var camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 100);  
+    
      // coordenadas para la  posicion de la camara 
-    camera.position.z = 10;
-    camera.position.y = 10;
-    camera.position.x = -10;
+    camera.position.z = 20;
+    camera.position.y = 20;
+    camera.position.x = -20;
     scene.add(camera); 
    
  
@@ -34,31 +37,79 @@
     scene.add( ejesXYZ );
     
 
-    // se raliza la funcion para la realizar las transformacion      
+    // se raliza la funcion para la realizar el cono con y sin transformacion     
+   
     function cono(transformación){             
    
         
-
-
            //el cono sin transformar
           var altura
+
+            // en este caso que el condicional dice que si no hay transformacion entonces su altura sera 1
             if (transformación==false){
             altura =1;}
 
-
+            // en caso contrario igual a 3
                 else {altura =3;}
 
 
+        //variables asignadas para el coño como son los lados y el diametro de la base
 
+        var diametro =1.5;
+        var lados = 15;
+        //investigue y tome en cuenta en esta pagina para guiarme con el cone geometry. https://threejs.org/docs/#api/en/geometries/ConeGeometry
 
-         var diametro =2;
-        var lados = 10;
-        var coneGeometry = new THREE.ConeGeometry(diametro,altura,lados);
+        var coneGeometry = new THREE.ConeGeometry(diametro,altura,lados); // este constructor tiene 3 parametros y anteriormente ya los asignamos con  las variables
         var basicMaterial = new THREE.MeshLambertMaterial({color: 0xEAEFF2}); // agragamos la textura al cono 
         var cone = new THREE.Mesh(coneGeometry, basicMaterial); 
         scene.add(cone);
-        cone.rotation.set(Math.PI/2, 0, 0);
-        cone.position.z=altura/2;
+
+        cone.rotation.set(Math.PI/2, 0, 0); //asignamos la rotacion de este en pi medios en el eje x 
+        cone.position.z=altura/2;           // tambien adignamos una posicion en z en el cual la altura se dividira en 2
          camera.lookAt(0,0,0);
 
     
+
+    // bien ahora realizaremos el condicional para cuando el cono este transformado
+
+
+    if (transformación==true ){
+
+             cone.rotation.z=-Math.PI/2;
+
+             cone.position.x=altura/2+0.85;
+
+             cone.position.y=0.83;
+
+             cone.position.z=0;
+
+             cone.rotation.y=-Math.PI/5.3;
+
+             camera.position.y = 8;
+
+             camera.position.x = -3;
+
+             camera.position.z = 20;
+
+             camera.lookAt(-2,0,0);
+
+        }
+     
+    }
+     cono(true);
+
+
+
+    var light = new THREE.PointLight(0xFFFFFF);
+    light.position.set(-10,15,50);
+    scene.add(light);
+
+    // Función para renderizar
+    function render() { 
+        requestAnimationFrame(render); 
+        renderer.render(scene, camera); 
+    }
+    render();
+    </script>
+    </body>
+    </html>
